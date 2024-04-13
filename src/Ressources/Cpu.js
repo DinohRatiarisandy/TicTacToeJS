@@ -9,13 +9,16 @@ function CPUmove(board) {
     * The AI make its turn
     */
    let bestScore = -Infinity;
+   let alpha = -Infinity;
+   let beta = Infinity;
    let move;
+
    for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
          if (board.state[i][j] === "") {
             board.state[i][j] = cpuPlayer;
 
-            let score = miniMaxAlgo(0, false, board);
+            let score = miniMaxAlphaBeta(0, false, board, alpha, beta);
 
             board.state[i][j] = ""; // Undo the move
 
@@ -32,7 +35,7 @@ function CPUmove(board) {
    return move;
 }
 
-function miniMaxAlgo(depth, isMaximizing, board) {
+function miniMaxAlphaBeta(depth, isMaximizing, board, alpha, beta) {
    let result = board.checkWinner();
 
    if (result !== "") {
@@ -46,11 +49,20 @@ function miniMaxAlgo(depth, isMaximizing, board) {
             if (board.state[i][j] === "") {
                board.state[i][j] = cpuPlayer;
 
-               let score = miniMaxAlgo(depth + 1, false, board);
+               let score = miniMaxAlphaBeta(
+                  depth + 1,
+                  false,
+                  board,
+                  alpha,
+                  beta
+               );
 
                board.state[i][j] = ""; // Undo the move
 
                bestScore = Math.max(bestScore, score);
+
+               alpha = Math.max(alpha, score);
+               if (beta <= alpha) break;
             }
          }
       }
@@ -62,11 +74,20 @@ function miniMaxAlgo(depth, isMaximizing, board) {
             if (board.state[i][j] === "") {
                board.state[i][j] = humanPlayer;
 
-               let score = miniMaxAlgo(depth + 1, true, board);
+               let score = miniMaxAlphaBeta(
+                  depth + 1,
+                  true,
+                  board,
+                  alpha,
+                  beta
+               );
 
                board.state[i][j] = ""; // Undo the move
 
                bestScore = Math.min(bestScore, score);
+
+               beta = Math.min(beta, score);
+               if (beta <= alpha) break;
             }
          }
       }
