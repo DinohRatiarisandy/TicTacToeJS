@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import Board from "../Ressources/Board";
-import CPUmove from "../Ressources/CPU";
+import CPUmove from "../Ressources/Cpu";
 
 const humanPlayer = "O";
 const cpuPlayer = "X";
 
 let board = new Board();
+let resultTxt = document.getElementById("Result");
 
 export default class Game extends Phaser.Scene {
    constructor() {
@@ -21,15 +22,16 @@ export default class Game extends Phaser.Scene {
       const result = board.checkWinner();
 
       if (result === "tie") {
-         console.log("No Winner !!! TIE");
+         resultTxt.textContent = "No winner ! TIE";
          this.scene.pause();
       } else if (result !== "") {
-         console.log("Winner: ", result);
+         if (result == "O ") resultTxt.textContent = "You Win !";
+         else resultTxt.textContent = "You Lose, CPU win !";
          this.scene.pause();
       }
 
       if (this.currentPlayer == cpuPlayer && !board.isFull()) {
-         const bestMove = CPUmove(board);
+         const bestMove = CPUmove(board, Infinity);
          board.state[bestMove.i][bestMove.j] = cpuPlayer;
          board.drawPlayer(this.scene.scene, bestMove.i, bestMove.j, cpuPlayer);
          this.changeTurn();

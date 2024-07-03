@@ -4,7 +4,7 @@ const scores = { X: 1, O: -1, tie: 0 };
 const humanPlayer = "O";
 const cpuPlayer = "X";
 
-function CPUmove(board) {
+function CPUmove(board, depth) {
    /**
     * The AI make its turn
     */
@@ -18,7 +18,7 @@ function CPUmove(board) {
          if (board.state[i][j] === "") {
             board.state[i][j] = cpuPlayer;
 
-            let score = miniMaxAlphaBeta(0, false, board, alpha, beta);
+            let score = miniMaxAlphaBeta(depth, false, board, alpha, beta);
 
             board.state[i][j] = ""; // Undo the move
 
@@ -38,7 +38,7 @@ function CPUmove(board) {
 function miniMaxAlphaBeta(depth, isMaximizing, board, alpha, beta) {
    let result = board.checkWinner();
 
-   if (result !== "") {
+   if (result !== "" || depth === 0) {
       return scores[result];
    }
 
@@ -50,7 +50,7 @@ function miniMaxAlphaBeta(depth, isMaximizing, board, alpha, beta) {
                board.state[i][j] = cpuPlayer;
 
                let score = miniMaxAlphaBeta(
-                  depth + 1,
+                  depth - 1,
                   false,
                   board,
                   alpha,
@@ -75,7 +75,7 @@ function miniMaxAlphaBeta(depth, isMaximizing, board, alpha, beta) {
                board.state[i][j] = humanPlayer;
 
                let score = miniMaxAlphaBeta(
-                  depth + 1,
+                  depth - 1,
                   true,
                   board,
                   alpha,
