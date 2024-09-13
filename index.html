@@ -30,13 +30,14 @@
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				gap: 12px;
 				text-align: center;
+				gap: 12px;
 			}
 
 			h3 {
 				font-size: 1.5rem;
 				color: #e0e0e0;
+				margin-top: 80%;
 			}
 
 			button {
@@ -63,11 +64,15 @@
 			/* Media Queries */
 			@media (max-width: 600px) {
 				body {
-					flex-direction: column;
+					width: 100%;
+					display: block;
 					padding: 10px;
+					flex-direction: column;
 				}
 
 				canvas {
+					display: block;
+					margin: 0 auto;
 					width: 95%;
 					height: auto;
 					max-width: 100%;
@@ -79,11 +84,16 @@
 
 				h3 {
 					font-size: 18px;
+					margin-top: 0;
 				}
 
 				.info {
-					justify-content: space-between;
+					height: auto;
+					flex-direction: row;
+					padding: 10px;
+					width: 100%;
 					align-items: center;
+					justify-content: space-between;
 				}
 			}
 		</style>
@@ -91,7 +101,6 @@
 	<body>
 		<canvas id="gameCanvas" width="500" height="500"></canvas>
 		<div class="info">
-			<div></div>
 			<h3 id="Result"></h3>
 			<button class="restartBtn">Restart</button>
 		</div>
